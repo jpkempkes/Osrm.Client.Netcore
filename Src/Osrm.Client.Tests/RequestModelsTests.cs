@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Osrm.Client.Models;
-using System;
+using Osrm.Client.Models.Requests;
 
 namespace Osrm.Client.Tests
 {

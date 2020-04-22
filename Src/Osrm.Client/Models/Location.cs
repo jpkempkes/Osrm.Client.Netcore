@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Osrm.Client
+namespace Osrm.Client.Models
 {
     public class Location //: System.Object
     {

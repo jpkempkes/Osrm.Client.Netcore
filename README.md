@@ -6,6 +6,11 @@ Forked from https://github.com/narfunikita/Osrm.Client - version 3.0.0.0
 
 ## Changes from forked version:
 
+#### v3.5.0.0
+  - Unify namespaces (further clean-up of 4x related code).
+  - Added IOsrmClient interface for Osrm5x class.
+  - Bumped version to get away from ones used by forked project's Nuget release.
+
 #### v3.0.0.1
   - Migrated implementation and tests to .NetCore 3.1.
   - Replaced WebClient with newer HttpClient implementation.

@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Osrm.Client.Models;
-using Osrm.Client.v5;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using Osrm.Client.Models.Requests;
 
 namespace Osrm.Client.Tests
 {

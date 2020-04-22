@@ -1,20 +1,18 @@
 ﻿using System.Text.Json;
 using Osrm.Client.Models;
+using Osrm.Client.Models.Requests;
+using Osrm.Client.Models.Responses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Osrm.Client;
 
-namespace Osrm.Client.v5
+namespace Osrm.Client
 {
-    public class Osrm5x
+    public class Osrm5x : IOsrmClient
     {
         private readonly HttpClient Client;
-        
+
         public string Url { get; set; }
 
         /// <summary>
@@ -72,56 +70,56 @@ namespace Osrm.Client.v5
             return await Send<RouteResponse>(RouteServiceName, requestParams);
         }
 
-        public async Task<Osrm.Client.Models.Responses.NearestResponse> Nearest(params Location[] locs)
+        public async Task<Models.Responses.NearestResponse> Nearest(params Location[] locs)
         {
-            return await Nearest(new Osrm.Client.Models.NearestRequest()
+            return await Nearest(new NearestRequest()
             {
                 Coordinates = locs
             });
         }
 
-        public async Task<Osrm.Client.Models.Responses.NearestResponse> Nearest(Osrm.Client.Models.NearestRequest requestParams)
+        public async Task<NearestResponse> Nearest(NearestRequest requestParams)
         {
-            return await Send<Osrm.Client.Models.Responses.NearestResponse>(NearestServiceName, requestParams);
+            return await Send<NearestResponse>(NearestServiceName, requestParams);
         }
 
-        public async Task<Osrm.Client.Models.Responses.TableResponse> Table(params Location[] locs)
+        public async Task<TableResponse> Table(params Location[] locs)
         {
-            return await Table(new Osrm.Client.Models.TableRequest()
+            return await Table(new TableRequest()
             {
                 Coordinates = locs
             });
         }
 
-        public async Task<Osrm.Client.Models.Responses.TableResponse> Table(Osrm.Client.Models.TableRequest requestParams)
+        public async Task<TableResponse> Table(TableRequest requestParams)
         {
-            return await Send<Osrm.Client.Models.Responses.TableResponse>(TableServiceName, requestParams);
+            return await Send<TableResponse>(TableServiceName, requestParams);
         }
 
-        public async Task<Osrm.Client.Models.Responses.MatchResponse> Match(params Location[] locs)
+        public async Task<MatchResponse> Match(params Location[] locs)
         {
-            return await Match(new Osrm.Client.Models.MatchRequest()
+            return await Match(new MatchRequest()
             {
                 Coordinates = locs
             });
         }
 
-        public async Task<Osrm.Client.Models.Responses.MatchResponse> Match(Osrm.Client.Models.MatchRequest requestParams)
+        public async Task<MatchResponse> Match(MatchRequest requestParams)
         {
-            return await Send<Osrm.Client.Models.Responses.MatchResponse>(MatchServiceName, requestParams);
+            return await Send<MatchResponse>(MatchServiceName, requestParams);
         }
 
-        public async Task<Osrm.Client.Models.Responses.TripResponse> Trip(params Location[] locs)
+        public async Task<TripResponse> Trip(params Location[] locs)
         {
-            return await Trip(new Osrm.Client.Models.TripRequest()
+            return await Trip(new TripRequest()
             {
                 Coordinates = locs
             });
         }
 
-        public async Task<Osrm.Client.Models.Responses.TripResponse> Trip(Osrm.Client.Models.TripRequest requestParams)
+        public async Task<TripResponse> Trip(TripRequest requestParams)
         {
-            return await Send<Osrm.Client.Models.Responses.TripResponse>(TripServiceName, requestParams);
+            return await Send<TripResponse>(TripServiceName, requestParams);
         }
 
         protected async Task<T> Send<T>(string service, BaseRequest request) //string coordinatesStr, List<Tuple<string, string>> urlParams)

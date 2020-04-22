@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Osrm.Client.Models
+namespace Osrm.Client.Models.Responses
 {
 
     public abstract class BaseResponse
