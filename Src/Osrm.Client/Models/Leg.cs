@@ -3,23 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Osrm.Client.Models
 {
-    [DataContract]
+
     public class RouteLeg
     {
-        [DataMember(Name = "distance")]
+        [JsonPropertyName("distance")]
         public double Distance { get; set; }
 
-        [DataMember(Name = "duration")]
+        [JsonPropertyName("duration")]
         public double Duration { get; set; }
 
-        [DataMember(Name = "steps")]
+        [JsonPropertyName("steps")]
         public RouteStep[] Steps { get; set; }
 
-        [DataMember(Name = "summary")]
+        [JsonPropertyName("summary")]
         public string Summary { get; set; }
+    
+        [JsonPropertyName("weight")]
+        public double Weight { get; set; }
     }
 }

@@ -62,15 +62,6 @@ namespace Osrm.Client.Models
                     .AddStringParameter("overview", Overview, () => Overview != DefaultOverview)
                     .AddStringParameter("continue_straight", ContinueStraight, () => ContinueStraight != DefaultContinueStraight);
 
-                //    .AddStringParameter("z", Zoom.ToString(), () => Zoom != DefaultZoom)
-                //    .AddBoolParameter("alt", Alternative, true)
-                //    .AddBoolParameter("geometry", Geometry, true)
-                //    .AddBoolParameter("compression", Compression, true)
-                //    .AddBoolParameter("uturns", UTurns, false)
-                //    .AddBoolParameter("u", UTurnAtTheVia, false)
-                //    .AddStringParameter("hint", Hint)
-                //    .AddStringParameter("checksum", Checksum);
-
                 return urlParams;
             }
         }

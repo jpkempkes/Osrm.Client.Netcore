@@ -30,15 +30,6 @@ namespace Osrm.Client.Models
                 urlParams
                     .AddStringParameter("number", Number.ToString(), () => Number != DefaultNumber);
 
-                //    .AddStringParameter("z", Zoom.ToString(), () => Zoom != DefaultZoom)
-                //    .AddBoolParameter("alt", Alternative, true)
-                //    .AddBoolParameter("geometry", Geometry, true)
-                //    .AddBoolParameter("compression", Compression, true)
-                //    .AddBoolParameter("uturns", UTurns, false)
-                //    .AddBoolParameter("u", UTurnAtTheVia, false)
-                //    .AddStringParameter("hint", Hint)
-                //    .AddStringParameter("checksum", Checksum);
-
                 return urlParams;
             }
         }

@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Osrm.Client.Models
 {
-    [DataContract]
+
     public class RouteStep
     {
-        [DataMember(Name = "distance")]
+        [JsonPropertyName("distance")]
         public double Distance { get; set; }
 
-        [DataMember(Name = "duration")]
+        [JsonPropertyName("duration")]
         public double Duration { get; set; }
 
-        [DataMember(Name = "geometry")]
+        [JsonPropertyName("geometry")]
         public string GeometryStr { get; set; }
 
         public Location[] Geometry
@@ -33,13 +34,14 @@ namespace Osrm.Client.Models
             }
         }
 
-        [DataMember(Name = "maneuver")]
+        [JsonPropertyName("maneuver")]
         public StepManeuver Maneuver { get; set; }
 
-        [DataMember(Name = "mode")]
+        [JsonPropertyName("mode")]
         public string Mode { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
+
     }
 }

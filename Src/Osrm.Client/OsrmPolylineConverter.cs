@@ -69,7 +69,7 @@ namespace Osrm.Client
         {
             var str = new StringBuilder();
 
-            var encodeDiff = (Action<int>)(diff =>
+            void encodeDiff(int diff)
             {
                 int shifted = diff << 1;
                 if (diff < 0)
@@ -85,7 +85,7 @@ namespace Osrm.Client
                 }
 
                 str.Append((char)(rem + 63));
-            });
+            }
 
             int lastLat = 0;
             int lastLng = 0;

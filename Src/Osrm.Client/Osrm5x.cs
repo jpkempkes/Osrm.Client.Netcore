@@ -1,16 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using Osrm.Client.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Osrm.Client;
 
 namespace Osrm.Client.v5
 {
     public class Osrm5x
     {
+        private readonly HttpClient Client;
+        
         public string Url { get; set; }
 
         /// <summary>
@@ -35,8 +39,9 @@ namespace Osrm.Client.v5
         protected readonly string TripServiceName = "trip";
         protected readonly string TileServiceName = "tile";
 
-        public Osrm5x(string url, string version = "v1", string profile = "driving")
+        public Osrm5x(HttpClient client, string url, string version = "v1", string profile = "driving")
         {
+            Client = client;
             Url = url;
             Version = version;
             Profile = profile;
@@ -48,9 +53,9 @@ namespace Osrm.Client.v5
         /// </summary>
         /// <param name="locs"></param>
         /// <returns></returns>
-        public RouteResponse Route(Location[] locs)
+        public async Task<RouteResponse> Route(Location[] locs)
         {
-            return Route(new RouteRequest()
+            return await Route(new RouteRequest()
             {
                 Coordinates = locs
             });
@@ -62,95 +67,82 @@ namespace Osrm.Client.v5
         /// </summary>
         /// <param name="requestParams"></param>
         /// <returns></returns>
-        public RouteResponse Route(RouteRequest requestParams)
+        public async Task<RouteResponse> Route(RouteRequest requestParams)
         {
-            return Send<RouteResponse>(RouteServiceName, requestParams);
+            return await Send<RouteResponse>(RouteServiceName, requestParams);
         }
 
-        public Osrm.Client.Models.Responses.NearestResponse Nearest(params Location[] locs)
+        public async Task<Osrm.Client.Models.Responses.NearestResponse> Nearest(params Location[] locs)
         {
-            return Nearest(new Osrm.Client.Models.NearestRequest()
+            return await Nearest(new Osrm.Client.Models.NearestRequest()
             {
                 Coordinates = locs
             });
         }
 
-        public Osrm.Client.Models.Responses.NearestResponse Nearest(Osrm.Client.Models.NearestRequest requestParams)
+        public async Task<Osrm.Client.Models.Responses.NearestResponse> Nearest(Osrm.Client.Models.NearestRequest requestParams)
         {
-            return Send<Osrm.Client.Models.Responses.NearestResponse>(NearestServiceName, requestParams);
+            return await Send<Osrm.Client.Models.Responses.NearestResponse>(NearestServiceName, requestParams);
         }
 
-        public Osrm.Client.Models.Responses.TableResponse Table(params Location[] locs)
+        public async Task<Osrm.Client.Models.Responses.TableResponse> Table(params Location[] locs)
         {
-            return Table(new Osrm.Client.Models.TableRequest()
+            return await Table(new Osrm.Client.Models.TableRequest()
             {
                 Coordinates = locs
             });
         }
 
-        public Osrm.Client.Models.Responses.TableResponse Table(Osrm.Client.Models.TableRequest requestParams)
+        public async Task<Osrm.Client.Models.Responses.TableResponse> Table(Osrm.Client.Models.TableRequest requestParams)
         {
-            return Send<Osrm.Client.Models.Responses.TableResponse>(TableServiceName, requestParams);
+            return await Send<Osrm.Client.Models.Responses.TableResponse>(TableServiceName, requestParams);
         }
 
-        public Osrm.Client.Models.Responses.MatchResponse Match(params Location[] locs)
+        public async Task<Osrm.Client.Models.Responses.MatchResponse> Match(params Location[] locs)
         {
-            return Match(new Osrm.Client.Models.MatchRequest()
+            return await Match(new Osrm.Client.Models.MatchRequest()
             {
                 Coordinates = locs
             });
         }
 
-        public Osrm.Client.Models.Responses.MatchResponse Match(Osrm.Client.Models.MatchRequest requestParams)
+        public async Task<Osrm.Client.Models.Responses.MatchResponse> Match(Osrm.Client.Models.MatchRequest requestParams)
         {
-            return Send<Osrm.Client.Models.Responses.MatchResponse>(MatchServiceName, requestParams);
+            return await Send<Osrm.Client.Models.Responses.MatchResponse>(MatchServiceName, requestParams);
         }
 
-        public Osrm.Client.Models.Responses.TripResponse Trip(params Location[] locs)
+        public async Task<Osrm.Client.Models.Responses.TripResponse> Trip(params Location[] locs)
         {
-            return Trip(new Osrm.Client.Models.TripRequest()
+            return await Trip(new Osrm.Client.Models.TripRequest()
             {
                 Coordinates = locs
             });
         }
 
-        public Osrm.Client.Models.Responses.TripResponse Trip(Osrm.Client.Models.TripRequest requestParams)
+        public async Task<Osrm.Client.Models.Responses.TripResponse> Trip(Osrm.Client.Models.TripRequest requestParams)
         {
-            return Send<Osrm.Client.Models.Responses.TripResponse>(TripServiceName, requestParams);
+            return await Send<Osrm.Client.Models.Responses.TripResponse>(TripServiceName, requestParams);
         }
 
-        protected T Send<T>(string service, BaseRequest request) //string coordinatesStr, List<Tuple<string, string>> urlParams)
+        protected async Task<T> Send<T>(string service, BaseRequest request) //string coordinatesStr, List<Tuple<string, string>> urlParams)
         {
             var coordinatesStr = request.CoordinatesUrlPart;
             List<Tuple<string, string>> urlParams = request.UrlParams;
             var fullUrl = OsrmRequestBuilder.GetUrl(Url, service, Version, Profile, coordinatesStr, urlParams);
-            string json = null;
-            using (var client = new OsrmWebClient(Timeout))
+
+            try
             {
-                json = client.DownloadString(new Uri(fullUrl));
+                string responseBody = await Client.GetStringAsync(fullUrl);
+
+                return await Task.FromResult(JsonSerializer.Deserialize<T>(responseBody));
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+                throw;
             }
 
-            return JsonConvert.DeserializeObject<T>(json); ;
-        }
-
-        private class OsrmWebClient : WebClient
-        {
-            private readonly int? _specificTimeout;
-
-            public OsrmWebClient(int? timeout = null)
-            {
-                _specificTimeout = timeout;
-            }
-
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                WebRequest request = base.GetWebRequest(address);
-
-                if (request != null && _specificTimeout.HasValue)
-                    request.Timeout = _specificTimeout.Value;
-
-                return request;
-            }
         }
 
     }

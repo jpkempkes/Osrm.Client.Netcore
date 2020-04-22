@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Osrm.Client.Models
 {
-    [DataContract]
     public class Route
     {
-        [DataMember(Name = "distance")]
+        [JsonPropertyName("distance")]
         public double Distance { get; set; }
 
-        [DataMember(Name = "duration")]
+        [JsonPropertyName("duration")]
         public double Duration { get; set; }
 
-        [DataMember(Name = "geometry")]
+        [JsonPropertyName("geometry")]
         public string GeometryStr { get; set; }
 
         public Location[] Geometry
@@ -33,13 +33,13 @@ namespace Osrm.Client.Models
             }
         }
 
-        [DataMember(Name = "legs")]
+        [JsonPropertyName("legs")]
         public RouteLeg[] Legs { get; set; }
 
         /// <summary>
         /// Match. Confidence of the matching. float value between 0 and 1. 1 is very confident that the matching is correct.
         /// </summary>
-        [DataMember(Name = "confidence")]
+        [JsonPropertyName("confidence")]
         public float? Confidence { get; set; }
     }
 }

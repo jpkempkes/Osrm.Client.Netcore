@@ -36,15 +36,6 @@ namespace Osrm.Client.Models
                     .AddParams("sources", Sources.Select(x => x.ToString()).ToArray())
                     .AddParams("destinations", Destinations.Select(x => x.ToString()).ToArray());
 
-                //    .AddStringParameter("z", Zoom.ToString(), () => Zoom != DefaultZoom)
-                //    .AddBoolParameter("alt", Alternative, true)
-                //    .AddBoolParameter("geometry", Geometry, true)
-                //    .AddBoolParameter("compression", Compression, true)
-                //    .AddBoolParameter("uturns", UTurns, false)
-                //    .AddBoolParameter("u", UTurnAtTheVia, false)
-                //    .AddStringParameter("hint", Hint)
-                //    .AddStringParameter("checksum", Checksum);
-
                 return urlParams;
             }
         }

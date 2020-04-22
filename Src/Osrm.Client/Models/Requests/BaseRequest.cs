@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,7 +46,21 @@ namespace Osrm.Client.Models
         {
             get
             {
-                return OsrmRequestBuilder.CreateCoordinatesUrl(Coordinates, SendCoordinatesAsPolyline);
+                if (Coordinates == null)
+                {
+                    return string.Empty;
+                }
+
+                if (SendCoordinatesAsPolyline)
+                {
+                    var encodedLocs = OsrmPolylineConverter.Encode(Coordinates, 1E5);
+                    return "polyline(" + encodedLocs + ")";
+                }
+                else
+                {
+                    return string.Join(";", Coordinates.Select(x => x.Longitude.ToString("F6", CultureInfo.InvariantCulture)
+                            + "," + x.Latitude.ToString("F6", CultureInfo.InvariantCulture)));
+                }
             }
         }
 
@@ -61,14 +76,6 @@ namespace Osrm.Client.Models
                     .AddParams("bearings", Bearings.Select(x => x.Item1 + "," + x.Item2).ToArray())
                     .AddParams("radiuses", Radiuses.Select(x => x.ToString()).ToArray())
                     .AddParams("hints", Hints);
-                //    .AddStringParameter("z", Zoom.ToString(), () => Zoom != DefaultZoom)
-                //    .AddBoolParameter("alt", Alternative, true)
-                //    .AddBoolParameter("geometry", Geometry, true)
-                //    .AddBoolParameter("compression", Compression, true)
-                //    .AddBoolParameter("uturns", UTurns, false)
-                //    .AddBoolParameter("u", UTurnAtTheVia, false)
-                //    .AddStringParameter("hint", Hint)
-                //    .AddStringParameter("checksum", Checksum);
 
                 return urlParams;
             }

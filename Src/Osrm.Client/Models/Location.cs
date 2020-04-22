@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +30,7 @@ namespace Osrm.Client
                 return false;
             }
 
-            Location p = obj as Location;
-            if ((System.Object)p == null)
+            if (!(obj is Location p))
             {
                 return false;
             }
@@ -42,7 +40,7 @@ namespace Osrm.Client
 
         public bool Equals(Location p)
         {
-            if ((object)p == null)
+            if (p is null)
             {
                 return false;
             }
@@ -58,13 +56,13 @@ namespace Osrm.Client
         public static bool operator ==(Location a, Location b)
         {
             // If both are null, or both are same instance, return true.
-            if (System.Object.ReferenceEquals(a, b))
+            if (ReferenceEquals(a, b))
             {
                 return true;
             }
 
             // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null))
+            if ((a is null) || (b is null))
             {
                 return false;
             }
