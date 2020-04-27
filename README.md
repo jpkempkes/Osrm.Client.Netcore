@@ -6,6 +6,9 @@ Forked from https://github.com/narfunikita/Osrm.Client - version 3.0.0.0
 
 ## Changes from forked version:
 
+#### v3.5.0.1
+  - Minor code clean-ups.
+
 #### v3.5.0.0
   - Unify namespaces (further clean-up of 4x related code).
   - Added IOsrmClient interface for Osrm5x class.
