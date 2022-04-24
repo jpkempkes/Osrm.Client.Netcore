@@ -18,6 +18,13 @@ namespace Osrm.Client.Models.Responses
         public double[][] Durations { get; set; }
 
         /// <summary>
+        /// array of arrays that stores the matrix in row-major order. distance[i][j] gives the travel distance from the i-th waypoint to the j-th waypoint. Values are given in meters.
+        /// </summary>
+
+        [JsonPropertyName("distances")]
+        public double[][] Distances { get; set; }
+
+        /// <summary>
         /// array of Waypoint objects describing all sources in order
         /// </summary>
         [JsonPropertyName("sources")]
